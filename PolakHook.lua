@@ -103,7 +103,7 @@ local function DrawFooterVote()
 		end
 	end
 	
-	if guiVoteRevealer:GetValue() == 1 then
+	if guiVoteRevealer:GetValue() == 0 then
 		return;
 	end
 	
