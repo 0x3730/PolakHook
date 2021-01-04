@@ -45,7 +45,7 @@ local voteVal = { "", "", "", "", "", "", "", ""};
 local vIndex = 1;
 --
 
-local function getVoteEnd(um)
+local function VoteEnd(um)
 	if um:GetID() == 46 then
 		voteType = um:GetInt(3);
 		voteTarget = um:GetString(5);
@@ -62,7 +62,7 @@ local function getVoteEnd(um)
 	end
 end
 
-local function voteCast(e)
+local function VoteStart(e)
     if (e:GetName() == "vote_cast") then
 		local index = e:GetInt("entityid");
 		local vote = e:GetInt("vote_option");
@@ -88,7 +88,7 @@ local function voteCast(e)
     end
 end
 
-local function DrawFooterVote()
+local function DrawVoteLogs()
 	
 	if string.len(voteVal[1]) < 1 or string.len(voteName[1]) < 1 or voteType == -1 then
 		return;
@@ -104,7 +104,7 @@ local function DrawFooterVote()
 		end
 	end
 	
-	if guiVoteRevealer:GetValue() == 0 then
+	if not guiVoteRevealer:GetValue() then
 		return;
 	end
 	
@@ -377,10 +377,12 @@ local function BackupCfg()
 end
 
 BackupCfg(); --Store user cfg
+
+client.AllowListener("vote_cast");
 callbacks.Register("Draw", CustomDesync);
 callbacks.Register("Draw", MiscFunctions);
 callbacks.Register("Draw", DrawInfo);
 --Vote rev
-callbacks.Register("Draw", DrawFooterVote);
-callbacks.Register('FireGameEvent', voteCast)
-callbacks.Register("DispatchUserMessage", getVoteEnd)
+callbacks.Register("Draw", DrawVoteLogs);
+callbacks.Register('FireGameEvent', VoteStart)
+callbacks.Register("DispatchUserMessage", VoteEnd)
