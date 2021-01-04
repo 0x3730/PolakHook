@@ -19,6 +19,7 @@ local guiVoteRevealer = gui.Checkbox(guiMiscBlock, "voterevealerkey", "Vote Reve
 local guiShowKeyBinds = gui.Checkbox(guiMiscBlock, "keybindskey", "Show Keybinds", 1);
 local guiBaimKey = gui.Checkbox(guiMiscBlock, "forcebaimkey", "Force BAim", 0);
 local guiMindmgKey = gui.Checkbox(guiMiscBlock, "mindmgbaimkey", "Force Min Damage", 0);
+local guiAwallKey = gui.Checkbox(guiMiscBlock, "awallkey", "Auto Wall", 1);
 local guiMinDmgSlider = gui.Slider(guiMiscBlock, "mindmgslider", "Min Damage", 0, 0, 130);
 
 --Some Vars
@@ -31,7 +32,7 @@ local aaInverted = 1;
 
 --User Cfg
 local aMinDmg = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };	
-local aBAim = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+local aBAim = { "", "", "", "", "", "", "", "", "", "", "" };
 local wTypes = { 'shared', 'zeus', 'pistol', 'hpistol', 'smg', 'rifle', 'shotgun', 'scout', 'asniper', 'sniper', 'lmg' }
 
 --Vote vars
@@ -187,13 +188,19 @@ end
 
 local function SetBaim()
 	for i=1, #wTypes do
-		gui.SetValue("rbot.hitscan.mode."..wTypes[i]..".bodyaim.force", 1);
+		gui.SetValue("rbot.hitscan.points."..wTypes[i]..".scale", "0 3 0 2 3 0 0 0");
 	end
 end
 
 local function RestoreBaim()
 	for i=1, #wTypes do
-		gui.SetValue("rbot.hitscan.mode."..wTypes[i]..".bodyaim.force", aBAim[i]);
+		gui.SetValue("rbot.hitscan.points."..wTypes[i]..".scale", aBAim[i]);
+	end
+end
+
+local function SetAwall(iToggle)
+	for i=1, #wTypes do
+		gui.SetValue("rbot.hitscan.mode."..wTypes[i]..".autowall", iToggle);
 	end
 end
 
@@ -297,6 +304,12 @@ local function MiscFunctions()
 	else
 		RestoreBaim();
 	end
+	
+	if guiAwallKey:GetValue() then
+		SetAwall(1);
+	else
+		SetAwall(0);
+	end
 end
 
 local function DrawInfo()
@@ -349,12 +362,17 @@ local function DrawInfo()
 		YAdd = YAdd + 15;
 	end
 	
+	if guiAwallKey:GetValue() then
+		local sInfo = "Auto Wall";
+		draw.TextShadow(screenCenterX - draw.GetTextSize(sInfo) / 2, screenCenterY + YAdd, sInfo);
+		YAdd = YAdd + 15;
+	end
 end
 
 local function BackupCfg()
 	for i=1, #wTypes do
 		aMinDmg[i] = gui.GetValue("rbot.accuracy.weapon."..wTypes[i]..".mindmg");
-		aBAim[i] = gui.GetValue("rbot.hitscan.mode."..wTypes[i]..".bodyaim.force");
+		aBAim[i] = gui.GetValue("rbot.hitscan.points."..wTypes[i]..".scale");
 	end
 end
 
