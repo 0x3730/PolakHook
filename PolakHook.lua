@@ -267,6 +267,14 @@ local function CustomDesync()
 		end
 	end
 	
+	if guiAntiaimDesyncTypeFlicking:GetValue() == true then
+		if math.random(5) == 1 then
+			guiAntiaimType:SetValue(2);
+		else
+			guiAntiaimType:SetValue(1);
+		end
+	end
+	
 	if guiAntiaimSwitchKey:GetValue() then
 		if input.IsButtonPressed(guiAntiaimSwitchKey:GetValue()) then
 			if aaInverted == 1 then
