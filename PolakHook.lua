@@ -170,10 +170,6 @@ local function DrawVoteLogs()
 	
 end
 
-local function RandomRange(Min, Max)
-	return Min + (math.random(Max * 2 + 1) % (Max - Min + 1));
-end
-
 local function RestoreDamage()
 	for i=1, #wTypes do
 		gui.SetValue("rbot.accuracy.weapon."..wTypes[i]..".mindmg", aMinDmg[i]);
@@ -216,10 +212,10 @@ end
 
 local function JitterSync(bSide)
 	if bSide == 1 then
-		gui.SetValue("rbot.antiaim.base.rotation", RandomRange(guiAntiaimRealMinDeltaJitter:GetValue(), guiAntiaimRealMaxDeltaJitter:GetValue()));
+		gui.SetValue("rbot.antiaim.base.rotation", math.random(guiAntiaimRealMinDeltaJitter:GetValue(), guiAntiaimRealMaxDeltaJitter:GetValue()));
 		gui.SetValue("rbot.antiaim.base.lby", math.random(guiAntiaimDeltaSlider:GetValue() * -1));
 	else
-		gui.SetValue("rbot.antiaim.base.rotation", RandomRange(guiAntiaimRealMinDeltaJitter:GetValue() * -1, guiAntiaimRealMaxDeltaJitter:GetValue() * -1));
+		gui.SetValue("rbot.antiaim.base.rotation", math.random(guiAntiaimRealMinDeltaJitter:GetValue() * -1, guiAntiaimRealMaxDeltaJitter:GetValue() * -1));
 		gui.SetValue("rbot.antiaim.base.lby", math.random(guiAntiaimDeltaSlider:GetValue()));
 	end
 end
