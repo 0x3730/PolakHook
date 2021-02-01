@@ -231,7 +231,7 @@ local function SwaySync(bSide)
 	end
 	
 	if iSwayIndex + 5 > guiAntiaimDeltaSlider:GetValue() + 1 then
-	   iSwayIndex = 0;
+	   iSwayIndex = 18;
 	end
 	
 	iSwayIndex = iSwayIndex + 5;	
